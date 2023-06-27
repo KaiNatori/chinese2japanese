@@ -1,6 +1,8 @@
 import requests
 import xml.etree.ElementTree as ET
 import time
+from pinyin_tone_converter.pinyin_tone_converter import PinyinToneConverter
+
 
 start_time = time.time()
 
@@ -26,7 +28,10 @@ def get_data_from_api(word):
 
     result = root.find("Result")
 
-    pinyin = result.find("pyn").text
+    pinyin_number = result.find("pyn").text
+
+    pinyin = PinyinToneConverter().convert_text(pinyin_number)
+
     translation = result.find("jpn").text
 
     return (word, pinyin, translation)
